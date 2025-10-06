@@ -53,6 +53,7 @@ begin
   Contador := 0;
   Memo1.Clear;
 
+
   if FileOpenDialog1.Execute then
     PastaXML := FileOpenDialog1.FileName;
 
@@ -74,6 +75,7 @@ begin
       Memo1.Lines.Add('ERRO ao ler: ' + ExtractFileName(Arquivo));
     end;
   end;
+
   Memo1.Lines.Add('-----['+IntToStr(Contador) +' Arquivos Processados]-------------------------');
   edtTag.TextHint := 'Digite o Nome da Tag sem <>';
 end;
