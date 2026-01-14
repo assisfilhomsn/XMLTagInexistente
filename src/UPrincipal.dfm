@@ -1,8 +1,8 @@
 object frmPrincipal: TfrmPrincipal
   Left = 0
   Top = 0
-  Caption = 'Principal'
-  ClientHeight = 526
+  Caption = 'XML <Tag> Inexistente'
+  ClientHeight = 574
   ClientWidth = 624
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -24,11 +24,50 @@ object frmPrincipal: TfrmPrincipal
     Font.Style = [fsBold]
     ParentFont = False
   end
+  object lblQtdeArquivosXml: TLabel
+    Left = 8
+    Top = 80
+    Width = 168
+    Height = 21
+    Caption = 'Total de arquivos XML'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object Label3: TLabel
+    Left = 8
+    Top = 100
+    Width = 197
+    Height = 21
+    Caption = 'Qtde Arquivos Processados: '
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object lblQtdeProcessados: TLabel
+    Left = 208
+    Top = 100
+    Width = 9
+    Height = 21
+    Caption = '0'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
   object Memo1: TMemo
     Left = 8
-    Top = 79
+    Top = 129
     Width = 608
-    Height = 442
+    Height = 408
     Lines.Strings = (
       'Memo1')
     ScrollBars = ssVertical
@@ -56,6 +95,16 @@ object frmPrincipal: TfrmPrincipal
     Height = 23
     TabOrder = 2
     TextHint = 'Digite o Nome da Tag sem <>'
+  end
+  object ProgressBar1: TProgressBar
+    Left = 8
+    Top = 543
+    Width = 608
+    Height = 23
+    ParentShowHint = False
+    Smooth = True
+    ShowHint = False
+    TabOrder = 3
   end
   object FileOpenDialog1: TFileOpenDialog
     FavoriteLinks = <>
