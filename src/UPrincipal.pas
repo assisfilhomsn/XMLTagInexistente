@@ -17,6 +17,10 @@ type
     Label3: TLabel;
     lblQtdeProcessados: TLabel;
     ProgressBar1: TProgressBar;
+    Label2: TLabel;
+    lblTotalCupom: TLabel;
+    Label4: TLabel;
+    lblQtdeSemProtocolo: TLabel;
     procedure btnProcuraXMLClick(Sender: TObject);
   private
     { Private declarations }
@@ -46,6 +50,22 @@ begin
       Exit(True);
 end;
 
+function SomaTag(pTag: IXMLNode; const TagNome: string): Double;
+var
+  I: Integer;
+begin
+  Result := 0;
+
+  if pTag = nil then
+    Exit;
+
+  if SameText(pTag.NodeName, TagNome) then
+    Result := StrToFloatDef(StringReplace(pTag.Text,'.',',',[rfReplaceAll]),0);
+
+  for I := 0 to pTag.ChildNodes.Count - 1 do
+    Result := Result + SomaTag(pTag.ChildNodes[I], TagNome);
+end;
+
 procedure TfrmPrincipal.btnProcuraXMLClick(Sender: TObject);
 var
   XML      : IXMLDocument;
@@ -72,10 +92,12 @@ begin
   var
     Arquivo  : string;
     Contador, Processados : Integer;
+    TotalVPag: Double;
 
   Begin
     Contador    := 0;
     Processados := 0;
+    TotalVPag   := 0;
 
     for Arquivo in TDirectory.GetFiles(PastaXML, '*.xml') do
     begin
@@ -84,18 +106,23 @@ begin
         XML.LoadFromFile(Arquivo);
         XML.Active := True;
 
+        TotalVPag := TotalVPag + SomaTag(XML.DocumentElement,'vNF');
+
         //if not TagExiste(XML.DocumentElement, 'nProt') then
         if not TagExiste(XML.DocumentElement, edtTag.Text) then
         begin
           Memo1.Lines.Add(ExtractFileName(Arquivo)+' Sem TAG <'+edtTag.Text+'>');
           inc(Contador);
         end;
+
       except
         Memo1.Lines.Add('ERRO ao ler: ' + ExtractFileName(Arquivo));
       end;
       inc(Processados);
-      lblQtdeProcessados.Caption := IntToStr(Processados);
-      ProgressBar1.Position := Processados;
+      lblQtdeProcessados.Caption  := IntToStr(Processados);
+      lblTotalCupom.Caption       := FloatToStr(TotalVPag);
+      lblQtdeSemProtocolo.Caption := IntToStr(Contador);
+      ProgressBar1.Position       := Processados;
     end;
     Memo1.Lines.Add('-----['+IntToStr(Contador) +' Arquivo(s) Encontrado(s)]-------------------------');
   End);

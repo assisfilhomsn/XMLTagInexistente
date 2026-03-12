@@ -39,7 +39,7 @@ object frmPrincipal: TfrmPrincipal
   end
   object Label3: TLabel
     Left = 8
-    Top = 100
+    Top = 101
     Width = 197
     Height = 21
     Caption = 'Qtde Arquivos Processados: '
@@ -63,11 +63,63 @@ object frmPrincipal: TfrmPrincipal
     Font.Style = [fsBold]
     ParentFont = False
   end
+  object Label2: TLabel
+    Left = 8
+    Top = 142
+    Width = 197
+    Height = 21
+    Caption = 'Valor Total ......................................: '
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object lblTotalCupom: TLabel
+    Left = 208
+    Top = 137
+    Width = 9
+    Height = 21
+    Caption = '0'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object Label4: TLabel
+    Left = 8
+    Top = 122
+    Width = 194
+    Height = 21
+    Caption = 'Qtde sem Protocolo ...............: '
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object lblQtdeSemProtocolo: TLabel
+    Left = 208
+    Top = 118
+    Width = 9
+    Height = 21
+    Caption = '0'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
   object Memo1: TMemo
     Left = 8
-    Top = 129
+    Top = 176
     Width = 608
-    Height = 408
+    Height = 361
     Lines.Strings = (
       'Memo1')
     ScrollBars = ssVertical
