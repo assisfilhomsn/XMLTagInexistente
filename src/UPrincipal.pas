@@ -66,12 +66,88 @@ begin
     Result := Result + SomaTag(pTag.ChildNodes[I], TagNome);
 end;
 
+function GetTagValue(pTag: IXMLNode; const TagNome: string): string;
+var
+  I: Integer;
+  Valor: string;
+begin
+  Result := '';
+  if pTag = nil then Exit;
+
+  if SameText(pTag.NodeName, TagNome) then
+    Exit(pTag.Text);
+
+  for I := 0 to pTag.ChildNodes.Count - 1 do
+  begin
+    Valor := GetTagValue(pTag.ChildNodes[I], TagNome);
+    if Valor <> '' then
+      Exit(Valor);
+  end;
+end;
+
+
+function SomaItensNFCE(XML: IXMLDocument): Double;
+var
+  NodeDet, NodeProd: IXMLNode;
+  i: Integer;
+  qCom, vUnCom: Double;
+begin
+  Result := 0;
+
+  NodeDet := XML.DocumentElement;
+
+  // percorre todo XML procurando <det>
+  for i := 0 to NodeDet.ChildNodes.Count - 1 do
+  begin
+    if SameText(NodeDet.ChildNodes[i].NodeName, 'NFe') then
+      NodeDet := NodeDet.ChildNodes[i];
+  end;
+
+  NodeDet := NodeDet.ChildNodes.FindNode('infNFe');
+
+  for i := 0 to NodeDet.ChildNodes.Count - 1 do
+  begin
+    if SameText(NodeDet.ChildNodes[i].NodeName, 'det') then
+    begin
+      NodeProd := NodeDet.ChildNodes[i].ChildNodes.FindNode('prod');
+
+      if Assigned(NodeProd) then
+      begin
+        qCom := StrToFloatDef(StringReplace(NodeProd.ChildNodes['qCom'].Text,'.',',',[rfReplaceAll]),0);
+        vUnCom := StrToFloatDef(StringReplace(NodeProd.ChildNodes['vUnCom'].Text,'.',',',[rfReplaceAll]),0);
+
+        Result := Result + (qCom * vUnCom);
+      end;
+    end;
+  end;
+end;
+
+function GetvNF(XML: IXMLDocument): Double;
+var
+  Node: IXMLNode;
+begin
+  Result := 0;
+
+  Node := XML.DocumentElement
+            .ChildNodes.FindNode('NFe')
+            .ChildNodes.FindNode('infNFe')
+            .ChildNodes.FindNode('total')
+            .ChildNodes.FindNode('ICMSTot')
+            .ChildNodes.FindNode('vNF');
+
+  if Assigned(Node) then
+    Result := StrToFloatDef(StringReplace(Node.Text,'.',',',[rfReplaceAll]),0);
+end;
+
+
 procedure TfrmPrincipal.btnProcuraXMLClick(Sender: TObject);
 var
   XML      : IXMLDocument;
   PastaXML : string;
   t: TThread;
   QtdeArquivos : TArray<string>;
+
+  vItem : Double;
 
 begin
   edtTag.TextHint := 'Digite o Nome da Tag sem <>';
@@ -99,6 +175,7 @@ begin
     Processados := 0;
     TotalVPag   := 0;
 
+
     for Arquivo in TDirectory.GetFiles(PastaXML, '*.xml') do
     begin
       try
@@ -106,7 +183,6 @@ begin
         XML.LoadFromFile(Arquivo);
         XML.Active := True;
 
-        TotalVPag := TotalVPag + SomaTag(XML.DocumentElement,'vNF');
 
         //if not TagExiste(XML.DocumentElement, 'nProt') then
         if not TagExiste(XML.DocumentElement, edtTag.Text) then
