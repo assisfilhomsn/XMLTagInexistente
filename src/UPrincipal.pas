@@ -120,7 +120,7 @@ begin
       end;
       inc(Processados);
       lblQtdeProcessados.Caption  := IntToStr(Processados);
-      lblTotalCupom.Caption       := FloatToStr(TotalVPag);
+      lblTotalCupom.Caption       := FormatFloat(',##0.00', TotalVPag);  //FloatToStr(TotalVPag);
       lblQtdeSemProtocolo.Caption := IntToStr(Contador);
       ProgressBar1.Position       := Processados;
     end;

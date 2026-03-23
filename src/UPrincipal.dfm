@@ -40,9 +40,9 @@ object frmPrincipal: TfrmPrincipal
   object Label3: TLabel
     Left = 8
     Top = 101
-    Width = 197
+    Width = 206
     Height = 21
-    Caption = 'Qtde Arquivos Processados: '
+    Caption = 'Qtde Arquivos Processados...: '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -51,8 +51,8 @@ object frmPrincipal: TfrmPrincipal
     ParentFont = False
   end
   object lblQtdeProcessados: TLabel
-    Left = 208
-    Top = 100
+    Left = 216
+    Top = 101
     Width = 9
     Height = 21
     Caption = '0'
@@ -66,9 +66,9 @@ object frmPrincipal: TfrmPrincipal
   object Label2: TLabel
     Left = 8
     Top = 142
-    Width = 197
+    Width = 203
     Height = 21
-    Caption = 'Valor Total ......................................: '
+    Caption = 'Valor Total ........................................: '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -77,8 +77,8 @@ object frmPrincipal: TfrmPrincipal
     ParentFont = False
   end
   object lblTotalCupom: TLabel
-    Left = 208
-    Top = 137
+    Left = 216
+    Top = 142
     Width = 9
     Height = 21
     Caption = '0'
@@ -92,9 +92,9 @@ object frmPrincipal: TfrmPrincipal
   object Label4: TLabel
     Left = 8
     Top = 122
-    Width = 194
+    Width = 206
     Height = 21
-    Caption = 'Qtde sem Protocolo ...............: '
+    Caption = 'Qtde sem Protocolo ...................: '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -103,8 +103,8 @@ object frmPrincipal: TfrmPrincipal
     ParentFont = False
   end
   object lblQtdeSemProtocolo: TLabel
-    Left = 208
-    Top = 118
+    Left = 216
+    Top = 122
     Width = 9
     Height = 21
     Caption = '0'
@@ -120,8 +120,6 @@ object frmPrincipal: TfrmPrincipal
     Top = 176
     Width = 608
     Height = 361
-    Lines.Strings = (
-      'Memo1')
     ScrollBars = ssVertical
     TabOrder = 0
   end
