@@ -3,7 +3,7 @@ object frmPrincipal: TfrmPrincipal
   Top = 0
   Caption = 'XML <Tag> Inexistente'
   ClientHeight = 574
-  ClientWidth = 624
+  ClientWidth = 732
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -118,7 +118,7 @@ object frmPrincipal: TfrmPrincipal
   object Memo1: TMemo
     Left = 8
     Top = 176
-    Width = 608
+    Width = 716
     Height = 361
     ScrollBars = ssVertical
     TabOrder = 0
@@ -126,7 +126,7 @@ object frmPrincipal: TfrmPrincipal
   object btnProcuraXML: TButton
     Left = 8
     Top = 41
-    Width = 608
+    Width = 716
     Height = 33
     Caption = 'Ler Arquivos XML'
     Font.Charset = ANSI_CHARSET
@@ -149,7 +149,7 @@ object frmPrincipal: TfrmPrincipal
   object ProgressBar1: TProgressBar
     Left = 8
     Top = 543
-    Width = 608
+    Width = 716
     Height = 23
     ParentShowHint = False
     Smooth = True

@@ -90,7 +90,7 @@ function SomaItensNFCE(XML: IXMLDocument): Double;
 var
   NodeDet, NodeProd: IXMLNode;
   i: Integer;
-  qCom, vUnCom: Double;
+  qCom, vUnCom, vDesc: Double;
 begin
   Result := 0;
 
@@ -113,10 +113,12 @@ begin
 
       if Assigned(NodeProd) then
       begin
-        qCom := StrToFloatDef(StringReplace(NodeProd.ChildNodes['qCom'].Text,'.',',',[rfReplaceAll]),0);
+        qCom   := StrToFloatDef(StringReplace(NodeProd.ChildNodes['qCom'].Text,'.',',',[rfReplaceAll]),0);
         vUnCom := StrToFloatDef(StringReplace(NodeProd.ChildNodes['vUnCom'].Text,'.',',',[rfReplaceAll]),0);
+        vDesc  := StrToFloatDef(StringReplace(NodeProd.ChildNodes['vDesc'].Text,'.',',',[rfReplaceAll]),0);
 
-        Result := Result + (qCom * vUnCom);
+        //Result := Result + ((qCom * vUnCom) - vDesc);
+        Result := Result + StrToFloat(FormatFloat('0.00', (qCom * vUnCom)-vDesc));
       end;
     end;
   end;
@@ -142,12 +144,13 @@ end;
 
 procedure TfrmPrincipal.btnProcuraXMLClick(Sender: TObject);
 var
-  XML      : IXMLDocument;
-  PastaXML : string;
-  t: TThread;
-  QtdeArquivos : TArray<string>;
+  XML                   : IXMLDocument;
+  PastaXML              : string;
+  t                     : TThread;
+  QtdeArquivos          : TArray<string>;
+  vItem                 : Double;
+  TotalItens, TotalXML, Dif : Double;
 
-  vItem : Double;
 
 begin
   edtTag.TextHint := 'Digite o Nome da Tag sem <>';
@@ -160,10 +163,13 @@ begin
     QtdeArquivos := TDirectory.GetFiles(PastaXML,'*.xml',TSearchOption.soTopDirectoryOnly);
     lblQtdeArquivosXml.Caption := Format('Total de arquivos XML: %d', [Length(QtdeArquivos)]);
   end;
+
   ProgressBar1.Min := 0;
   ProgressBar1.max := Length(QtdeArquivos);
 
   Memo1.Clear;
+
+  //--- THread
   t := TThread.CreateAnonymousThread(Procedure
   var
     Arquivo  : string;
@@ -190,6 +196,34 @@ begin
           Memo1.Lines.Add(ExtractFileName(Arquivo)+' Sem TAG <'+edtTag.Text+'>');
           inc(Contador);
         end;
+
+        //--- Soma dos Itens (Inicio)
+        TotalItens := SomaItensNFCE(XML);
+        TotalXML   := GetvNF(XML);
+
+        Dif := TotalItens - TotalXML;
+        Dif := StrToFloat(FormatFloat('0.00', Dif)); // normaliza (2 casas)
+
+        if Dif = 0 then
+        begin
+          //Memo1.Lines.Add(ExtractFileName(Arquivo) + ' OK');
+        end
+        else if Abs(Dif) <= 0.01 then
+        begin
+          Memo1.Lines.Add(ExtractFileName(Arquivo) + ' ARREDONDAMENTO -> Dif: ' + FormatFloat('0.00', Dif));
+        end
+        else
+        begin
+          Memo1.Lines.Add(ExtractFileName(Arquivo) +
+            ' ERRO (3º a 10º Casa Decimal > 5) -> Itens: ' + FormatFloat('0.00', TotalItens) +
+            ' XML: ' + FormatFloat('0.00', TotalXML) +
+            ' Dif: ' + FormatFloat('0.00', Dif));
+        end;
+        //--- Soma dos Itens (Fim)
+
+        //--- Total do Cupom (Inicio)
+        TotalVPag := TotalVPag + SomaTag(XML.DocumentElement,'vPag');
+        //--- Total do Cupom (Fim)
 
       except
         Memo1.Lines.Add('ERRO ao ler: ' + ExtractFileName(Arquivo));
