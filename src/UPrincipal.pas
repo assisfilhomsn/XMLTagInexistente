@@ -13,7 +13,7 @@ type
     FileOpenDialog1: TFileOpenDialog;
     edtTag: TEdit;
     Label1: TLabel;
-    lblQtdeArquivosXml: TLabel;
+    lblTotalXMLDescricao: TLabel;
     Label3: TLabel;
     lblQtdeProcessados: TLabel;
     ProgressBar1: TProgressBar;
@@ -21,6 +21,9 @@ type
     lblTotalCupom: TLabel;
     Label4: TLabel;
     lblQtdeSemProtocolo: TLabel;
+    Label5: TLabel;
+    lblTotalItem: TLabel;
+    lblQtdeArquivosXml: TLabel;
     procedure btnProcuraXMLClick(Sender: TObject);
   private
     { Private declarations }
@@ -144,12 +147,13 @@ end;
 
 procedure TfrmPrincipal.btnProcuraXMLClick(Sender: TObject);
 var
-  XML                   : IXMLDocument;
-  PastaXML              : string;
-  t                     : TThread;
-  QtdeArquivos          : TArray<string>;
-  vItem                 : Double;
-  TotalItens, TotalXML, Dif : Double;
+  TotalItens,TotalItensCupom, TotalXML, Dif, DifDecimal : Double;
+  XML            : IXMLDocument;
+  PastaXML       : string;
+  t              : TThread;
+  QtdeArquivos   : TArray<string>;
+  vItem          : Double;
+
 
 
 begin
@@ -159,9 +163,12 @@ begin
 
   if FileOpenDialog1.Execute then
   begin
-    PastaXML := FileOpenDialog1.FileName;
-    QtdeArquivos := TDirectory.GetFiles(PastaXML,'*.xml',TSearchOption.soTopDirectoryOnly);
-    lblQtdeArquivosXml.Caption := Format('Total de arquivos XML: %d', [Length(QtdeArquivos)]);
+    PastaXML                   := FileOpenDialog1.FileName;
+    QtdeArquivos               := TDirectory.GetFiles(PastaXML,'*.xml',TSearchOption.soTopDirectoryOnly);
+    lblQtdeArquivosXml.Caption := IntToStr(Length(QtdeArquivos));
+    //lblQtdeArquivosXml.Caption := Format('Total de arquivos XML: %d', [Length(QtdeArquivos)]);
+
+
   end;
 
   ProgressBar1.Min := 0;
@@ -177,9 +184,10 @@ begin
     TotalVPag: Double;
 
   Begin
-    Contador    := 0;
-    Processados := 0;
-    TotalVPag   := 0;
+    Contador        := 0;
+    Processados     := 0;
+    TotalVPag       := 0;
+    TotalItensCupom := 0;
 
 
     for Arquivo in TDirectory.GetFiles(PastaXML, '*.xml') do
@@ -198,11 +206,13 @@ begin
         end;
 
         //--- Soma dos Itens (Inicio)
-        TotalItens := SomaItensNFCE(XML);
-        TotalXML   := GetvNF(XML);
+        TotalItens      := SomaItensNFCE(XML);
+        TotalItensCupom := TotalItensCupom + SomaItensNFCE(XML);
+        TotalXML        := GetvNF(XML);
 
-        Dif := TotalItens - TotalXML;
-        Dif := StrToFloat(FormatFloat('0.00', Dif)); // normaliza (2 casas)
+        DifDecimal := TotalItens - TotalXML;
+        Dif        := TotalItens - TotalXML;
+        Dif        := StrToFloat(FormatFloat('0.00', DifDecimal)); // normaliza (2 casas)
 
         if Dif = 0 then
         begin
@@ -215,7 +225,7 @@ begin
         else
         begin
           Memo1.Lines.Add(ExtractFileName(Arquivo) +
-            ' ERRO (3º a 10º Casa Decimal > 5) -> Itens: ' + FormatFloat('0.00', TotalItens) +
+            ' ERRO (3º Casa Decimal > 5) -> Itens: ' + FormatFloat('0.00', TotalItens) +
             ' XML: ' + FormatFloat('0.00', TotalXML) +
             ' Dif: ' + FormatFloat('0.00', Dif));
         end;
@@ -232,9 +242,10 @@ begin
       lblQtdeProcessados.Caption  := IntToStr(Processados);
       lblTotalCupom.Caption       := FormatFloat(',##0.00', TotalVPag);  //FloatToStr(TotalVPag);
       lblQtdeSemProtocolo.Caption := IntToStr(Contador);
+      lblTotalItem.Caption        := FormatFloat(',##0.0000000000', TotalItensCupom);  //FloatToStr(TotalVPag);
       ProgressBar1.Position       := Processados;
     end;
-    Memo1.Lines.Add('-----['+IntToStr(Contador) +' Arquivo(s) Encontrado(s)]-------------------------');
+    Memo1.Lines.Add('-----['+IntToStr(Contador) +' Arquivo(s) com inconsistencia(s) Encontrado(s)]-------------------------');
   End);
   t.Start;
 end;

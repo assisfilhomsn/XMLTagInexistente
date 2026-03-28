@@ -24,7 +24,7 @@ object frmPrincipal: TfrmPrincipal
     Font.Style = [fsBold]
     ParentFont = False
   end
-  object lblQtdeArquivosXml: TLabel
+  object lblTotalXMLDescricao: TLabel
     Left = 8
     Top = 80
     Width = 168
@@ -65,10 +65,10 @@ object frmPrincipal: TfrmPrincipal
   end
   object Label2: TLabel
     Left = 8
-    Top = 142
-    Width = 203
+    Top = 162
+    Width = 206
     Height = 21
-    Caption = 'Valor Total ........................................: '
+    Caption = 'Valor Total .........................................: '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -78,7 +78,7 @@ object frmPrincipal: TfrmPrincipal
   end
   object lblTotalCupom: TLabel
     Left = 216
-    Top = 142
+    Top = 162
     Width = 9
     Height = 21
     Caption = '0'
@@ -115,11 +115,50 @@ object frmPrincipal: TfrmPrincipal
     Font.Style = [fsBold]
     ParentFont = False
   end
+  object Label5: TLabel
+    Left = 8
+    Top = 142
+    Width = 206
+    Height = 21
+    Caption = 'Valor Total Itens..............................: '
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object lblTotalItem: TLabel
+    Left = 216
+    Top = 142
+    Width = 9
+    Height = 21
+    Caption = '0'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lblQtdeArquivosXml: TLabel
+    Left = 216
+    Top = 80
+    Width = 9
+    Height = 21
+    Caption = '0'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
   object Memo1: TMemo
     Left = 8
-    Top = 176
+    Top = 189
     Width = 716
-    Height = 361
+    Height = 348
     ScrollBars = ssVertical
     TabOrder = 0
   end
